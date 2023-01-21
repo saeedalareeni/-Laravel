@@ -52,7 +52,12 @@ Route::prefix('message/')->middleware('auth:admin')->group(function () {
     Route::get('show/{id}', [MessageController::class, 'show'])->name('message.show');
     Route::get('replay/{id}', [MessageController::class, 'edit'])->name('message.replay');
     Route::post('replay/{id}', [MessageController::class, 'update'])->name('message.replayDone');
-    Route::get('/send', [MessageController::class, 'create'])->withoutMiddleware('auth:admin');
-    Route::post('/', [MessageController::class, 'store'])->name('message.store')->withoutMiddleware('auth:admin');
-});
 
+    // This Routes for User
+    Route::get('send', [MessageController::class, 'create'])->name('message.send')->withoutMiddleware('auth:admin');
+    Route::post('/', [MessageController::class, 'store'])->name('message.store')->withoutMiddleware('auth:admin');
+
+    // This Route For Search
+    Route::get('search', [MessageController::class, 'ShowSearchBar'])->name('message.search')->withoutMiddleware('auth:admin');
+    Route::post('searchResult', [MessageController::class, 'searchResult'])->name('message.resultSearch')->withoutMiddleware('auth:admin');
+});

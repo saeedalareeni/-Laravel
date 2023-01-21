@@ -113,6 +113,7 @@
 
                 <div class="card-footer">
                     <button type="submit" class="btn btn-primary">Submit</button>
+                    <a href="{{ route('message.search') }}" class="btn btn-default float-right">Revision Your Message</a>
                 </div>
             </form>
         </div>

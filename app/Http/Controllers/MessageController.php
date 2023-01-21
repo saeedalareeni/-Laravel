@@ -17,7 +17,7 @@ class MessageController extends Controller
         $data = Message::all();
         return response()->view('cms.orders.index', ['messages' => $data]);
     }
-    
+
     public function create()
     {
         return response()->view('cms.orders.addOrder');
@@ -51,7 +51,7 @@ class MessageController extends Controller
                 $message->image = 'message/' . $imageName;
             }
             $saved = $message->save();
-            if($saved){
+            if ($saved) {
                 Mail::to($message->student_email)->send(new StudentWelcomeEmail($message));
             }
             return redirect('message/send')->with('success', 'Your Message has been sent successfully, check your email.');
@@ -76,17 +76,29 @@ class MessageController extends Controller
             $message->closed_date = now();
 
             $saved = $message->save();
-            if($saved){
+            if ($saved) {
                 Mail::to($message->student_email)->send(new responseMessage($message));
             }
             return redirect()->route('message.index');
         }
-       
-        
     }
 
-    public function destroy(Message $message)
+    public function ShowSearchBar()
     {
-        //
+        return response()->view('cms.orders.ShowSearchBar');
+    }
+
+    public function searchResult(Request $request)
+    {
+        $value = $request->input('search');
+        if ($value) {
+            if ($searchResult = Message::where('id', 'LIKE', "%" . $value . "%")->first()) {
+                return response()->view('cms.orders.resultSearch', ['message' => $searchResult]);
+            } else {
+                return redirect('message/search')->with('error', 'You Have Entered an invalid ID.');
+            }
+        } else {
+            return redirect('message/search')->with('error', 'You have entered an empty value');
+        }
     }
 }
